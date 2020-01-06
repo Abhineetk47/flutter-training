@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "71416739898",
+    "firebase_url": "https://demoapp-6955d.firebaseio.com",
+    "project_id": "demoapp-6955d",
+    "storage_bucket": "demoapp-6955d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71416739898:android:5e7c0885dcfd38adaf5d03",
+        "android_client_info": {
+          "package_name": "com.example.user_banking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71416739898-ocfsrn9dvavioffh91hsh6tqfcu0krj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Boo5YEtqAID-4sNQhpt2uwXfK7YQyTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71416739898-ocfsrn9dvavioffh91hsh6tqfcu0krj5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "71416739898-99d0i3n4ih27t7iqrpjsscm5dvaq72qk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Demoapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
