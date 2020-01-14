@@ -1,21 +1,23 @@
-import 'package:Demoapp/flipcoin.dart';
+import 'package:Demoapp/Screens/incidents_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Firestore extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
-  _FirestoreState createState() => _FirestoreState();
+  _LoginState createState() => _LoginState();
 }
 
-class _FirestoreState extends State<Firestore> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class _LoginState extends State<Login> {
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  TextEditingController emailInputController;
+  TextEditingController pwdInputController;
   bool visibility = true;
   bool _autoValidate = false;
 
   String _email;
 
   String _password;
-
-  String uppercase_email;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class _FirestoreState extends State<Firestore> {
         child: new Container(
           margin: new EdgeInsets.all(15.0),
           child: new Form(
-            key: _formKey,
+            key: _loginFormKey,
             autovalidate: _autoValidate,
             child: formUI(),
           ),
@@ -40,6 +42,7 @@ class _FirestoreState extends State<Firestore> {
     return new Column(
       children: <Widget>[
         new TextFormField(
+          controller: emailInputController,
           decoration: const InputDecoration(labelText: 'Email'),
           keyboardType: TextInputType.emailAddress,
           validator: validateEmail,
@@ -48,6 +51,7 @@ class _FirestoreState extends State<Firestore> {
           },
         ),
         new TextFormField(
+          controller: pwdInputController,
           obscureText: visibility,
           decoration: InputDecoration(
               labelText: 'Password',
@@ -71,7 +75,7 @@ class _FirestoreState extends State<Firestore> {
         ),
         new RaisedButton(
           onPressed: _validateInputs,
-          child: new Text('Validate'),
+          child: new Text('Login'),
         )
       ],
     );
@@ -101,11 +105,24 @@ class _FirestoreState extends State<Firestore> {
   }
 
   void _validateInputs() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      uppercase_email = _email.toUpperCase();
-      print("$uppercase_email");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Flip()));
+    if (_loginFormKey.currentState.validate()) {
+      _loginFormKey.currentState.save();
+      FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: _email, password: _password)
+          .then((currentUser) => Firestore.instance
+              .collection("incidents")
+              .document(currentUser.user.uid)
+              .get()
+              .then((DocumentSnapshot result) => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => IncidentList(
+                            email: _email,
+                            //title: result["fname"] + "'s Tasks",
+                            uid: currentUser.user.uid,
+                          ))))
+              .catchError((err) => print(err)))
+          .catchError((err) => print(err));
     } else {
       setState(() {
         _autoValidate = true;
